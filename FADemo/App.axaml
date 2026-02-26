@@ -1,9 +1,12 @@
 <Application xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:sty="using:FluentAvalonia.Styling"
-             x:Class="FADemo.App"
-             RequestedThemeVariant="Default">
-    <Application.Styles>
-        <sty:FluentAvaloniaTheme />
-    </Application.Styles>
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:sty="using:FluentAvalonia.Styling"
+			 x:Class="FADemo.App"
+			 xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
+			 RequestedThemeVariant="Default">
+	<Application.Styles>
+		<sty:FluentAvaloniaTheme />	 
+	</Application.Styles>
+
 </Application>

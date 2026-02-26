@@ -2,8 +2,7 @@ using LyuExtensions.Aspects;
 
 namespace FADemo.ViewModels;
 
-
 [Singleton]
-public partial class MainWindowViewModel : ViewModelBase
+public partial class MainViewModel : ViewModelBase
 {
 }

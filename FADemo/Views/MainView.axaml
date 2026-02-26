@@ -3,23 +3,61 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:vm="using:FADemo.ViewModels"
              mc:Ignorable="d"
+             x:DataType="vm:MainViewModel"
              x:Class="FADemo.Views.MainView">
-    <ui:NavigationView AlwaysShowHeader="False"
-                       PaneDisplayMode="Left"
-                       Name="NavView"
-                       IsSettingsVisible="True"
-                       IsBackEnabled="{Binding #FrameView.CanGoBack}"
-                       ItemInvoked="OnNavViewItemInvoked">
-        <ui:NavigationView.MenuItems>
-            <ui:NavigationViewItem Content="主页"
-                                   Tag="HomePage">
-                <ui:NavigationViewItem.IconSource>
-                    <ui:SymbolIconSource Symbol="Home" />
-                </ui:NavigationViewItem.IconSource>
-            </ui:NavigationViewItem>
-        </ui:NavigationView.MenuItems>
+   <Grid RowDefinitions="Auto,*">
+        <Grid Name="TitleBarHost"
+              ColumnDefinitions="Auto,Auto,*,Auto" 
+              Background="Transparent">
+             <Image Margin="12 4"
+                   IsHitTestVisible="False"
+                   Source="/Assets/avalonia-logo.ico"
+                   Width="18" Height="18"
+                   DockPanel.Dock="Left"
+                   Name="WindowIcon"
+                   RenderOptions.BitmapInterpolationMode="HighQuality">
+                 <Image.IsVisible>
+                    <OnPlatform Default="False">
+                        <On Options="Windows" Content="True" />
+                    </OnPlatform>
+                </Image.IsVisible>
+            </Image>
+           <TextBlock Text="{Binding Title, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                       FontSize="12"
+                       IsHitTestVisible="False"
+                       VerticalAlignment="Center"
+                       Grid.Column="1">
+                <TextBlock.IsVisible>
+                    <OnPlatform Default="False">
+                        <On Options="Windows" Content="True" />
+                    </OnPlatform>
+                </TextBlock.IsVisible>
+            </TextBlock>
 
-        <ui:Frame Name="FrameView" />
-    </ui:NavigationView>
+            <Border Grid.Column="2"/>
+        </Grid>
+
+        <ui:NavigationView AlwaysShowHeader="False"
+                           PaneDisplayMode="Left"
+                           Grid.RowSpan="2"
+                           Name="NavView"
+                           PaneTitle="目录"        
+                           IsSettingsVisible="True"
+                           IsBackEnabled="{Binding #FrameView.CanGoBack}"
+                           ItemInvoked="OnNavViewItemInvoked">
+
+            <ui:NavigationView.MenuItems>
+                <ui:NavigationViewItem Content="主页"
+                                       Tag="HomePage">
+                    <ui:NavigationViewItem.IconSource>
+                        <ui:SymbolIconSource Symbol="Home" />
+                    </ui:NavigationViewItem.IconSource>
+                </ui:NavigationViewItem>
+            </ui:NavigationView.MenuItems>
+
+            <ui:Frame Name="FrameView"/>
+        </ui:NavigationView>
+    </Grid>
 </UserControl>
