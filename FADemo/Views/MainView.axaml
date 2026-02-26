@@ -1,0 +1,25 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             mc:Ignorable="d"
+             x:Class="FADemo.Views.MainView">
+    <ui:NavigationView AlwaysShowHeader="False"
+                       PaneDisplayMode="Left"
+                       Name="NavView"
+                       IsSettingsVisible="True"
+                       IsBackEnabled="{Binding #FrameView.CanGoBack}"
+                       ItemInvoked="OnNavViewItemInvoked">
+        <ui:NavigationView.MenuItems>
+            <ui:NavigationViewItem Content="主页"
+                                   Tag="HomePage">
+                <ui:NavigationViewItem.IconSource>
+                    <ui:SymbolIconSource Symbol="Home" />
+                </ui:NavigationViewItem.IconSource>
+            </ui:NavigationViewItem>
+        </ui:NavigationView.MenuItems>
+
+        <ui:Frame Name="FrameView" />
+    </ui:NavigationView>
+</UserControl>

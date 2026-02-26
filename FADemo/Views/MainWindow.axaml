@@ -3,52 +3,12 @@
         xmlns:vm="using:FADemo.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="using:FADemo.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="FADemo.Views.MainWindow"
-        xmlns:ui="using:FluentAvalonia.UI.Controls"
         x:DataType="vm:MainWindowViewModel"
         Title="FADemo">
-        
-        <Grid RowDefinitions="Auto,*">
-               <Grid  Name="TitleBarHost"
-                     ColumnDefinitions="Auto,Auto,*,Auto" 
-                     Background="Transparent">
-                   <Image Margin="12 4"
-                          IsHitTestVisible="False"
-                          Source="/Assets/avalonia-logo.ico"
-                          Width="18" Height="18"
-                          DockPanel.Dock="Left"
-                          Name="WindowIcon"
-                          RenderOptions.BitmapInterpolationMode="HighQuality">
-                       <Image.IsVisible>
-                           <OnPlatform Default="False">
-                               <On Options="Windows" Content="True" />
-                           </OnPlatform>
-                       </Image.IsVisible>
-                   </Image>
 
-                   <TextBlock Text="{Binding Title, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-                              FontSize="12"
-                              IsHitTestVisible="False"
-                              VerticalAlignment="Center"
-                              Grid.Column="1">
-                       <TextBlock.IsVisible>
-                           <OnPlatform Default="False">
-                               <On Options="Windows" Content="True" />
-                           </OnPlatform>
-                       </TextBlock.IsVisible>
-                   </TextBlock>
-                   
-                   <Border Grid.Column="2"/>
-               </Grid> 
-            <ui:NavigationView AlwaysShowHeader="False"
-                               PaneDisplayMode="Left"
-                               Grid.Row="1"
-                               Name="NavView"
-                               IsSettingsVisible="True"
-                               IsBackEnabled="{Binding #FrameView.CanGoBack}">
-                <ui:Frame Name="FrameView" />
-            </ui:NavigationView>
-        </Grid>
+    <views:MainView />
 
 </Window>

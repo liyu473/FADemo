@@ -1,6 +1,8 @@
-﻿namespace FADemo.ViewModels;
+namespace FADemo.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
-
+    public MainWindowViewModel()
+    {
+    }
 }
