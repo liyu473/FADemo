@@ -10,6 +10,7 @@ using FluentAvalonia.UI.Windowing;
 using LyuExtensions.Aspects;
 using System;
 using System.Threading.Tasks;
+using Avalonia.Input;
 
 namespace FADemo.Views;
 
@@ -22,7 +23,7 @@ public partial class MainView : UserControl
         DataContext = App.GetService<MainViewModel>();
 
         FrameView.Navigated += OnFrameViewNavigated;
-        NavView.BackRequested += OnNavigationViewBackRequested;
+        BackButton.Click += (sender, args) => FrameView.GoBack();;
         NavigateTo("HomePage");
         NavView.SelectedItem = NavView.MenuItems[0];
     }
@@ -34,28 +35,42 @@ public partial class MainView : UserControl
         if (VisualRoot is AppWindow aw)
         {
             TitleBarHost.ColumnDefinitions[3].Width = new GridLength(aw.TitleBar.RightInset, GridUnitType.Pixel);
+            BackButton.IsVisible = false;
         }
-    }
-
-    private void OnNavigationViewBackRequested(object? sender, NavigationViewBackRequestedEventArgs e)
-    {
-        FrameView.GoBack();
     }
 
     private void OnFrameViewNavigated(object? sender, NavigationEventArgs e)
     {
-        if (FrameView.BackStackDepth > 0 && !NavView.IsBackButtonVisible)
+        if (FrameView.BackStackDepth > 0 && !BackButton.IsVisible)
         {
             _ = AnimateTitleForBackButton(show: true);
         }
-        else if (FrameView.BackStackDepth == 0 && NavView.IsBackButtonVisible)
+        else if (FrameView.BackStackDepth == 0 && BackButton.IsVisible)
         {
             _ = AnimateTitleForBackButton(show: false);
         }
     }
+    
+    protected override void OnPointerReleased(PointerReleasedEventArgs e)
+    {
+        var pt = e.GetCurrentPoint(this);
+
+        // Frame handles X1 -> BackRequested automatically, we can handle X2
+        // here to enable forward navigation
+        if (pt.Properties.PointerUpdateKind == PointerUpdateKind.XButton2Released)
+        {
+            if (FrameView.CanGoForward)
+            {
+                FrameView.GoForward();
+                e.Handled = true;
+            }
+        }
+
+        base.OnPointerReleased(e);
+    }
 
     /// <summary>
-    /// µ¼º½¿Ø¼ş¿ÉÒÔ·µ»ØÊ±£¬´´½¨¹ı¶É¶¯»­
+    /// ä¸ºè¿”å›æŒ‰é’®æ˜¾ç¤ºæä¾›åŠ¨ç”»
     /// </summary>
     /// <param name="show"></param>
     /// <returns></returns>
@@ -65,7 +80,7 @@ public partial class MainView : UserControl
         var to = show ? new Thickness(48, 8, 12, 8) : new Thickness(12, 8, 12, 8);
 
         if (!show)
-            NavView.IsBackButtonVisible = false;
+            BackButton.IsVisible = false; 
 
         var ani = new Animation
         {
@@ -90,7 +105,7 @@ public partial class MainView : UserControl
         await ani.RunAsync(WindowIcon);
 
         if (show)
-            NavView.IsBackButtonVisible = true;
+            BackButton.IsVisible = true; 
     }
 
     private void OnNavViewItemInvoked(object? sender, NavigationViewItemInvokedEventArgs e)
