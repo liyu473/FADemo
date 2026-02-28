@@ -124,13 +124,14 @@ public partial class MainView : UserControl
 
     private void NavigateTo(string tag)
     {
+        var s = App.GetService<HomePage>();
         switch (tag)
         {
             case "HomePage":
-                FrameView.Navigate(typeof(HomePage));
+                FrameView.NavigateFromObject(s);
                 break;
             case "SettingsPage":
-                FrameView.Navigate(typeof(SettingsPage));
+                FrameView.NavigateFromObject(s);
                 break;
         }
     }

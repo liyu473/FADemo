@@ -2,12 +2,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:FADemo.ViewModels"
              mc:Ignorable="d"
+             x:DataType="vm:HomePageViewModel"
              x:Class="FADemo.Views.HomePage">
     <Grid>
-        <TextBlock HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   FontSize="24"
-                   Text="Home Page" />
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Spacing="8">
+            <TextBlock HorizontalAlignment="Center"
+                       FontSize="24"
+                       Text="Home" />
+            <TextBlock HorizontalAlignment="Center"
+                       Opacity="0.7"
+                       Text="主页" />
+        </StackPanel>
     </Grid>
 </UserControl>
