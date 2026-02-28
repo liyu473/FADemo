@@ -13,5 +13,6 @@ public partial class SettingsPage : UserControl
     public SettingsPage()
     {
         InitializeComponent();
+        DataContext = _vm;
     }
 }

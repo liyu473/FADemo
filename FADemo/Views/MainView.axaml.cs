@@ -59,6 +59,8 @@ public partial class MainView : UserControl
         {
             _ = AnimateTitleForBackButton(show: false);
         }
+
+        SyncSelectedItemWithCurrentPage();
     }
     
     protected override void OnPointerReleased(PointerReleasedEventArgs e)
@@ -142,6 +144,35 @@ public partial class MainView : UserControl
             case "SettingsPage":
                 FrameView.NavigateFromObject(App.GetService<SettingsPage>());
                 break;
+        }
+    }
+
+    private void SyncSelectedItemWithCurrentPage()
+    {
+        if (FrameView.Content == null)
+            return;
+
+        var currentPageType = FrameView.Content.GetType();
+        
+        // 遍历菜单项找到匹配的
+        foreach (var item in NavView.MenuItems)
+        {
+            if (item is NavigationViewItem nvi && nvi.Tag is string tag)
+            {
+                bool isMatch = (tag == "HomePage" && currentPageType == typeof(HomePage)) ||
+                               (tag == "SettingsPage" && currentPageType == typeof(SettingsPage));
+                
+                if (isMatch)
+                {
+                    NavView.SelectedItem = nvi;
+                    return;
+                }
+            }
+        }
+        
+        if (currentPageType == typeof(SettingsPage))
+        {
+            NavView.SelectedItem = NavView.SettingsItem;
         }
     }
 }
