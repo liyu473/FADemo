@@ -11,21 +11,31 @@ using LyuExtensions.Aspects;
 using System;
 using System.Threading.Tasks;
 using Avalonia.Input;
+using FADemo.Services;
 
 namespace FADemo.Views;
 
 [Transient]
 public partial class MainView : UserControl
 {
+    [Inject]
+    private readonly MainViewModel _vm;
+
+    [Inject]
+    private readonly INavigationPageFactory _navigationPageFactory;
+
     public MainView()
     {
         InitializeComponent();
-        DataContext = App.GetService<MainViewModel>();
+        DataContext = _vm;
 
         FrameView.Navigated += OnFrameViewNavigated;
-        BackButton.Click += (sender, args) => FrameView.GoBack();;
+        BackButton.Click += (sender, args) => FrameView.GoBack();
+
+        _navigationPageFactory?.RegistersPages();
+        FrameView.NavigationPageFactory = _navigationPageFactory;
+
         NavigateTo("HomePage");
-        NavView.SelectedItem = NavView.MenuItems[0];
     }
 
     protected override void OnLoaded(RoutedEventArgs e)
@@ -124,14 +134,13 @@ public partial class MainView : UserControl
 
     private void NavigateTo(string tag)
     {
-        var s = App.GetService<HomePage>();
         switch (tag)
         {
             case "HomePage":
-                FrameView.NavigateFromObject(s);
+                FrameView.NavigateFromObject(App.GetService<HomePage>());
                 break;
             case "SettingsPage":
-                FrameView.NavigateFromObject(s);
+                FrameView.NavigateFromObject(App.GetService<SettingsPage>());
                 break;
         }
     }

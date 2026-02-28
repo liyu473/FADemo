@@ -2,7 +2,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
-using FADemo.ViewModels;
+using FADemo.Services;
 using FADemo.Views;
 using LyuExtensions.Extensions;
 using LyuLogExtension.Builder;
@@ -17,7 +17,7 @@ namespace FADemo;
 
 public partial class App : Application
 {
-    public IServiceProvider Services { get; private set; }= null!;
+    public IServiceProvider Services { get; private set; } = null!;
 
     public static T GetService<T>() where T : notnull
     {
@@ -49,6 +49,7 @@ public partial class App : Application
             // Avoid duplicate validations from both Avalonia and the CommunityToolkit.
             // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
             DisableAvaloniaDataAnnotationValidation();
+
             desktop.MainWindow = Services.GetRequiredService<MainWindow>();
         }
 

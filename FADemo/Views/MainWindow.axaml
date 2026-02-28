@@ -9,6 +9,6 @@
         x:DataType="vm:MainWindowViewModel"
         Title="FADemo">
 
-    <views:MainView />
+   <ContentPresenter x:Name="RootHost"/>
 
 </Window>

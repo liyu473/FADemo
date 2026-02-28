@@ -8,13 +8,14 @@ namespace FADemo.Views;
 public partial class MainWindow : AppWindow
 {
     [Inject]
-    private readonly MainWindowViewModel _vm;   
-    
+    private readonly MainWindowViewModel _vm;
+
     public MainWindow()
     {
         InitializeComponent();
         DataContext = _vm;
         TitleBar.ExtendsContentIntoTitleBar = true;
         TitleBar.TitleBarHitTestType = TitleBarHitTestType.Complex;
+        RootHost.Content = App.GetService<MainView>();
     }
 }
