@@ -136,16 +136,19 @@ public partial class MainView : UserControl
 
     private void NavigateTo(string tag)
     {
-        switch (tag)
+        // 通过 Tag 获取对应的 Page 类型
+        var assembly = typeof(MainView).Assembly;
+        var pageType = assembly.GetType($"{assembly.GetName().Name}.Views.{tag}");
+
+        if (pageType != null)
         {
-            case "HomePage":
-                FrameView.NavigateFromObject(App.GetService<HomePage>());
-                break;
-            case "SettingsPage":
-                FrameView.NavigateFromObject(App.GetService<SettingsPage>());
-                break;
+            if (App.GetService(pageType) is Control page)
+            {
+                FrameView.NavigateFromObject(page);
+            }
         }
     }
+
 
     private void SyncSelectedItemWithCurrentPage()
     {
@@ -153,16 +156,13 @@ public partial class MainView : UserControl
             return;
 
         var currentPageType = FrameView.Content.GetType();
+        var currentPageName = currentPageType.Name; 
         
-        // 遍历菜单项找到匹配的
         foreach (var item in NavView.MenuItems)
         {
             if (item is NavigationViewItem nvi && nvi.Tag is string tag)
             {
-                bool isMatch = (tag == "HomePage" && currentPageType == typeof(HomePage)) ||
-                               (tag == "SettingsPage" && currentPageType == typeof(SettingsPage));
-                
-                if (isMatch)
+                if (tag == currentPageName)
                 {
                     NavView.SelectedItem = nvi;
                     return;
@@ -170,7 +170,7 @@ public partial class MainView : UserControl
             }
         }
         
-        if (currentPageType == typeof(SettingsPage))
+        if (currentPageName == "SettingsPage")
         {
             NavView.SelectedItem = NavView.SettingsItem;
         }

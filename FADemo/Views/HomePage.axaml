@@ -16,6 +16,7 @@
             <TextBlock HorizontalAlignment="Center"
                        Opacity="0.7"
                        Text="主页" />
+             <TextBox Text="{Binding TestString}"/>
         </StackPanel>
     </Grid>
 </UserControl>

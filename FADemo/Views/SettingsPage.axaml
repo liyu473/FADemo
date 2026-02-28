@@ -16,8 +16,6 @@
             <TextBlock HorizontalAlignment="Center"
                        Opacity="0.7"
                        Text="这里可以放应用设置项" />
-
-            <TextBox Text="{Binding TestString}"/>
         </StackPanel>
     </Grid>
 </UserControl>
