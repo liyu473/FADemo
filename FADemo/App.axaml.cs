@@ -2,7 +2,6 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
-using FADemo.Services;
 using FADemo.Views;
 using LyuExtensions.Extensions;
 using LyuLogExtension.Builder;
@@ -65,7 +64,6 @@ public partial class App : Application
             builder
                 .WithRetentionDays(30)
                 .WithCleanupInterval(TimeSpan.FromHours(2))
-                .WithFilter("Master", LogLevel.Information)
                 .FilterMicrosoft()
                 .FilterSystem()
                 .WithRollingInterval(RollingInterval.Hour)
@@ -73,7 +71,6 @@ public partial class App : Application
                 .AddInfoOutput() // 默认info以上，logs/
                 .AddFileOutput("logs/trace/", LogLevel.Trace)
                 .AddFileOutput("logs/debug/", LogLevel.Debug, LogLevel.Debug)
-                .WithOutputFilter("Master", LogLevel.Critical)
         );
 
         services.RegisterServices();

@@ -34,8 +34,6 @@ public partial class MainView : UserControl
 
         _navigationPageFactory?.RegistersPages();
         FrameView.NavigationPageFactory = _navigationPageFactory;
-
-        NavigateTo("HomePage");
     }
 
     protected override void OnLoaded(RoutedEventArgs e)
@@ -47,6 +45,8 @@ public partial class MainView : UserControl
             TitleBarHost.ColumnDefinitions[3].Width = new GridLength(aw.TitleBar.RightInset, GridUnitType.Pixel);
             BackButton.IsVisible = false;
         }
+
+        NavigateTo("HomePage");
     }
 
     private void OnFrameViewNavigated(object? sender, NavigationEventArgs e)
@@ -136,7 +136,6 @@ public partial class MainView : UserControl
 
     private void NavigateTo(string tag)
     {
-        // 通过 Tag 获取对应的 Page 类型
         var assembly = typeof(MainView).Assembly;
         var pageType = assembly.GetType($"{assembly.GetName().Name}.Views.{tag}");
 
@@ -162,17 +161,60 @@ public partial class MainView : UserControl
         {
             if (item is NavigationViewItem nvi && nvi.Tag is string tag)
             {
-                if (tag == currentPageName)
+                bool isSelected = tag == currentPageName;
+                
+                if (isSelected)
                 {
                     NavView.SelectedItem = nvi;
-                    return;
                 }
+                
+                SetNavigationItemIcon(nvi, isSelected);
             }
         }
         
         if (currentPageName == "SettingsPage")
         {
             NavView.SelectedItem = NavView.SettingsItem;
+            SetNavigationItemIcon(NavView.SettingsItem,true);
+        }
+        else
+        {
+            SetNavigationItemIcon(NavView.SettingsItem, false);
+        }
+    }
+
+    private void SetNavigationItemIcon(NavigationViewItem item, bool isSelected)
+    {
+        if (item == null)
+            return;
+
+        if (item == NavView.SettingsItem || item.Tag as string == "设置")
+        {
+            var settingsIconKey = isSelected ? "SettingsIconFilled" : "SettingsIcon";
+            if (this.TryFindResource(settingsIconKey, out var settingsIcon) || 
+                Application.Current?.TryFindResource(settingsIconKey, out settingsIcon) == true)
+            {
+                item.IconSource = settingsIcon as IconSource;
+            }
+            return;
+        }
+
+        if (item.Tag is not string tag)
+            return;
+
+        var iconKey = tag switch
+        {
+            "HomePage" => isSelected ? "HomeIconFilled" : "HomeIcon",
+            _ => null
+        };
+
+        if (iconKey != null)
+        {
+            if (this.TryFindResource(iconKey, out var icon) || 
+                Application.Current?.TryFindResource(iconKey, out icon) == true)
+            {
+                item.IconSource = icon as IconSource;
+            }
         }
     }
 }

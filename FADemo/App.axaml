@@ -6,7 +6,15 @@
              xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
 			 RequestedThemeVariant="Default">
 	<Application.Styles>
-		<sty:FluentAvaloniaTheme />	 
+		<sty:FluentAvaloniaTheme />
+		<StyleInclude Source="/Styles/NavigationViewStyles.axaml" />
 	</Application.Styles>
 
+	<Application.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceInclude Source="/Styles/Icons.axaml" />
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Application.Resources>
 </Application>
