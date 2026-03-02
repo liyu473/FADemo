@@ -1,3 +1,5 @@
+using System.ComponentModel;
+using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using LyuExtensions.Aspects;
 

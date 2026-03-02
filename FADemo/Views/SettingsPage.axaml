@@ -26,6 +26,18 @@
                 </ui:SettingsExpander>
 
                 <ui:SettingsExpander
+                    Description="Change window background effect (Mica/Acrylic)"
+                    Header="Window Background"
+                    IconSource="Highlight">
+                    <ui:SettingsExpander.Footer>
+                        <ui:FAComboBox
+                            ItemsSource="{Binding BackgroundTypes}"
+                            MinWidth="150"
+                            SelectedItem="{Binding CurrentBackgroundType}" />
+                    </ui:SettingsExpander.Footer>
+                </ui:SettingsExpander>
+
+                <ui:SettingsExpander
                     Description="Set a custom accent color for the App"
                     Header="App Accent Color"
                     IconSource="ColorLine"
@@ -36,7 +48,11 @@
                         </ui:SettingsExpanderItem.Footer>
                     </ui:SettingsExpanderItem>
                 </ui:SettingsExpander>
+
+
             </StackPanel>
         </ScrollViewer>
     </Grid>
 </UserControl>
+
+

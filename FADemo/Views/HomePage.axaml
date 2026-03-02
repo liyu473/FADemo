@@ -1,22 +1,26 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:FADemo.ViewModels"
-             mc:Ignorable="d"
-             x:DataType="vm:HomePageViewModel"
-             x:Class="FADemo.Views.HomePage">
+<UserControl
+    mc:Ignorable="d"
+    x:Class="FADemo.Views.HomePage"
+    x:DataType="vm:HomePageViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:FADemo.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Grid>
-        <StackPanel HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Spacing="8">
-            <TextBlock HorizontalAlignment="Center"
-                       FontSize="24"
-                       Text="Home" />
-            <TextBlock HorizontalAlignment="Center"
-                       Opacity="0.7"
-                       Text="主页" />
-             <TextBox Text="{Binding TestString}"/>
+        <StackPanel
+            HorizontalAlignment="Center"
+            Spacing="8"
+            VerticalAlignment="Center">
+            <TextBlock
+                FontSize="24"
+                HorizontalAlignment="Center"
+                Text="Home" />
+            <TextBlock
+                HorizontalAlignment="Center"
+                Opacity="0.7"
+                Text="主页" />
+            <TextBox Text="{Binding TestString}" />
         </StackPanel>
     </Grid>
 </UserControl>

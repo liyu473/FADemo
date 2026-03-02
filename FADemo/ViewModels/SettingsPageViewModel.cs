@@ -1,9 +1,12 @@
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Styling;
 using CommunityToolkit.Mvvm.ComponentModel;
 using FluentAvalonia.Styling;
 using LyuExtensions.Aspects;
+using System.Collections.Generic;
+using Avalonia.Controls.ApplicationLifetimes;
 
 namespace FADemo.ViewModels;
 
@@ -17,7 +20,7 @@ public partial class SettingsPageViewModel : ViewModelBase
         _faTheme = (Application.Current?.Styles[0] as FluentAvaloniaTheme)!;
         CurrentAppTheme = AppThemes[0];
         
-        if (_faTheme?.TryGetResource("SystemAccentColor", null, out var currentColor) == true)
+        if (_faTheme.TryGetResource("SystemAccentColor", null, out var currentColor))
         {
             CustomAccentColor = (Color)currentColor;
         }
@@ -30,6 +33,12 @@ public partial class SettingsPageViewModel : ViewModelBase
             ThemeVariant.Dark,
         ];
 
+    public List<WindowTransparencyLevel> BackgroundTypes { get; } =
+        [
+            WindowTransparencyLevel.Mica,
+            WindowTransparencyLevel.AcrylicBlur,
+        ];
+
     [ObservableProperty] 
     public partial ThemeVariant? CurrentAppTheme { get; set; }
 
@@ -38,14 +47,7 @@ public partial class SettingsPageViewModel : ViewModelBase
         if (Application.Current != null)
         {
             Application.Current.RequestedThemeVariant = value;
-            if (value != ThemeVariant.Default)
-            {
-                _faTheme.PreferSystemTheme = false;
-            }
-            else
-            {
-                _faTheme.PreferSystemTheme = true;
-            }
+            _faTheme.PreferSystemTheme = value == ThemeVariant.Default;
         }
     }
 
@@ -55,5 +57,16 @@ public partial class SettingsPageViewModel : ViewModelBase
     partial void OnCustomAccentColorChanged(Color value)
     {
         _faTheme.CustomAccentColor = value;
+    }
+
+    [ObservableProperty]
+    public partial WindowTransparencyLevel CurrentBackgroundType { get; set; } = WindowTransparencyLevel.Mica;
+
+    partial void OnCurrentBackgroundTypeChanged(WindowTransparencyLevel value)
+    {
+        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: not null } desktop)
+        {
+            desktop.MainWindow.TransparencyLevelHint = value == WindowTransparencyLevel.None ? [] :[value];
+        }
     }
 }
