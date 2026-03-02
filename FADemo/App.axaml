@@ -15,6 +15,8 @@
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceInclude Source="/Styles/Icons.axaml" />
 			</ResourceDictionary.MergedDictionaries>
+			
+			<Thickness x:Key="PageMargin">20 20 20 0</Thickness>
 		</ResourceDictionary>
 	</Application.Resources>
 </Application>
