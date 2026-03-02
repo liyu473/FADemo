@@ -7,6 +7,7 @@ using FluentAvalonia.Styling;
 using LyuExtensions.Aspects;
 using System.Collections.Generic;
 using Avalonia.Controls.ApplicationLifetimes;
+using FluentAvalonia.UI.Media.Animation;
 
 namespace FADemo.ViewModels;
 
@@ -39,6 +40,14 @@ public partial class SettingsPageViewModel : ViewModelBase
             WindowTransparencyLevel.AcrylicBlur,
         ];
 
+    public List<string> NavigationTransitions { get; } =
+        [
+            "Default",
+            "DrillIn",
+            "Slide",
+            "None",
+        ];
+
     [ObservableProperty] 
     public partial ThemeVariant? CurrentAppTheme { get; set; }
 
@@ -69,4 +78,7 @@ public partial class SettingsPageViewModel : ViewModelBase
             desktop.MainWindow.TransparencyLevelHint = value == WindowTransparencyLevel.None ? [] :[value];
         }
     }
+
+    [ObservableProperty]
+    public partial string CurrentNavigationTransition { get; set; } = "Default";
 }

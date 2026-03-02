@@ -1,17 +1,21 @@
+using System;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
+using Avalonia.Threading;
+using FADemo.Services;
 using FADemo.ViewModels;
 using FluentAvalonia.UI.Controls;
+using FluentAvalonia.UI.Media.Animation;
 using FluentAvalonia.UI.Navigation;
 using FluentAvalonia.UI.Windowing;
 using LyuExtensions.Aspects;
-using System;
-using System.Threading.Tasks;
-using Avalonia.Input;
-using FADemo.Services;
+using Microsoft.Extensions.Logging;
+using ZLogger;
 
 namespace FADemo.Views;
 
@@ -19,10 +23,16 @@ namespace FADemo.Views;
 public partial class MainView : UserControl
 {
     [Inject]
+    private readonly ILogger<MainView> _logger;
+
+    [Inject]
     private readonly MainViewModel _vm;
 
     [Inject]
     private readonly INavigationPageFactory _navigationPageFactory;
+
+    [Inject]
+    private readonly SettingsPageViewModel _settingsVm;
 
     public MainView()
     {
@@ -42,12 +52,16 @@ public partial class MainView : UserControl
 
         if (VisualRoot is AppWindow aw)
         {
-            TitleBarHost.ColumnDefinitions[3].Width = new GridLength(aw.TitleBar.RightInset, GridUnitType.Pixel);
+            TitleBarHost.ColumnDefinitions[3].Width = new GridLength(
+                aw.TitleBar.RightInset,
+                GridUnitType.Pixel
+            );
             BackButton.IsVisible = false;
         }
 
         NavigateTo("HomePage");
     }
+    
 
     private void OnFrameViewNavigated(object? sender, NavigationEventArgs e)
     {
@@ -62,7 +76,7 @@ public partial class MainView : UserControl
 
         SyncSelectedItemWithCurrentPage();
     }
-    
+
     protected override void OnPointerReleased(PointerReleasedEventArgs e)
     {
         var pt = e.GetCurrentPoint(this);
@@ -92,7 +106,7 @@ public partial class MainView : UserControl
         var to = show ? new Thickness(48, 8, 12, 8) : new Thickness(12, 8, 12, 8);
 
         if (!show)
-            BackButton.IsVisible = false; 
+            BackButton.IsVisible = false;
 
         var ani = new Animation
         {
@@ -100,24 +114,20 @@ public partial class MainView : UserControl
             FillMode = FillMode.Forward,
             Children =
             {
-                new KeyFrame
-                {
-                    Cue = new Cue(0d),
-                    Setters = { new Setter(MarginProperty, from) }
-                },
+                new KeyFrame { Cue = new Cue(0d), Setters = { new Setter(MarginProperty, from) } },
                 new KeyFrame
                 {
                     Cue = new Cue(1d),
                     KeySpline = new KeySpline(0, 0, 0, 1),
-                    Setters = { new Setter(MarginProperty, to) }
-                }
-            }
+                    Setters = { new Setter(MarginProperty, to) },
+                },
+            },
         };
 
         await ani.RunAsync(WindowIcon);
 
         if (show)
-            BackButton.IsVisible = true; 
+            BackButton.IsVisible = true;
     }
 
     private void OnNavViewItemInvoked(object? sender, NavigationViewItemInvokedEventArgs e)
@@ -143,11 +153,34 @@ public partial class MainView : UserControl
         {
             if (App.GetService(pageType) is Control page)
             {
-                FrameView.NavigateFromObject(page);
+                var transition = GetNavigationTransition();
+                FrameView.NavigateFromObject(
+                    page,
+                    new FrameNavigationOptions
+                    {
+                        TransitionInfoOverride = transition,
+                        IsNavigationStackEnabled = true,
+                    }
+                );
             }
         }
     }
 
+    /// <summary>
+    /// 根据用户设置获取导航动画
+    /// </summary>
+    private NavigationTransitionInfo? GetNavigationTransition()
+    {
+        var transitionName = _settingsVm?.CurrentNavigationTransition ?? "Default";
+
+        return transitionName switch
+        {
+            "Slide" => new SlideNavigationTransitionInfo(),
+            "DrillIn" => new DrillInNavigationTransitionInfo(),
+            "None" => new SuppressNavigationTransitionInfo(),
+            _ => null,
+        };
+    }
 
     private void SyncSelectedItemWithCurrentPage()
     {
@@ -155,27 +188,27 @@ public partial class MainView : UserControl
             return;
 
         var currentPageType = FrameView.Content.GetType();
-        var currentPageName = currentPageType.Name; 
-        
+        var currentPageName = currentPageType.Name;
+
         foreach (var item in NavView.MenuItems)
         {
             if (item is NavigationViewItem nvi && nvi.Tag is string tag)
             {
                 bool isSelected = tag == currentPageName;
-                
+
                 if (isSelected)
                 {
                     NavView.SelectedItem = nvi;
                 }
-                
+
                 SetNavigationItemIcon(nvi, isSelected);
             }
         }
-        
+
         if (currentPageName == "SettingsPage")
         {
             NavView.SelectedItem = NavView.SettingsItem;
-            SetNavigationItemIcon(NavView.SettingsItem,true);
+            SetNavigationItemIcon(NavView.SettingsItem, true);
         }
         else
         {
@@ -191,8 +224,10 @@ public partial class MainView : UserControl
         if (item == NavView.SettingsItem || item.Tag as string == "设置")
         {
             var settingsIconKey = isSelected ? "SettingsIconFilled" : "SettingsIcon";
-            if (this.TryFindResource(settingsIconKey, out var settingsIcon) || 
-                Application.Current?.TryFindResource(settingsIconKey, out settingsIcon) == true)
+            if (
+                this.TryFindResource(settingsIconKey, out var settingsIcon)
+                || Application.Current?.TryFindResource(settingsIconKey, out settingsIcon) == true
+            )
             {
                 item.IconSource = settingsIcon as IconSource;
             }
@@ -205,13 +240,15 @@ public partial class MainView : UserControl
         var iconKey = tag switch
         {
             "HomePage" => isSelected ? "HomeIconFilled" : "HomeIcon",
-            _ => null
+            _ => null,
         };
 
         if (iconKey != null)
         {
-            if (this.TryFindResource(iconKey, out var icon) || 
-                Application.Current?.TryFindResource(iconKey, out icon) == true)
+            if (
+                this.TryFindResource(iconKey, out var icon)
+                || Application.Current?.TryFindResource(iconKey, out icon) == true
+            )
             {
                 item.IconSource = icon as IconSource;
             }

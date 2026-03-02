@@ -38,6 +38,19 @@
                 </ui:SettingsExpander>
 
                 <ui:SettingsExpander
+                    Description="Choose navigation transition animation"
+                    Header="Navigation Animation"
+                    IconSource="StarEmphasis">
+                    <ui:SettingsExpander.Footer>
+                        <ui:FAComboBox
+                            ItemsSource="{Binding NavigationTransitions}"
+                            MinWidth="150"
+                            SelectedItem="{Binding CurrentNavigationTransition}" />
+                    </ui:SettingsExpander.Footer>
+                </ui:SettingsExpander>
+
+
+                <ui:SettingsExpander
                     Description="Set a custom accent color for the App"
                     Header="App Accent Color"
                     IconSource="ColorLine"
@@ -48,6 +61,7 @@
                         </ui:SettingsExpanderItem.Footer>
                     </ui:SettingsExpanderItem>
                 </ui:SettingsExpander>
+
 
 
             </StackPanel>
