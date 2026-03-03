@@ -1,13 +1,12 @@
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Media;
 using Avalonia.Styling;
 using CommunityToolkit.Mvvm.ComponentModel;
 using FluentAvalonia.Styling;
 using LyuExtensions.Aspects;
-using System.Collections.Generic;
-using Avalonia.Controls.ApplicationLifetimes;
-using FluentAvalonia.UI.Media.Animation;
 
 namespace FADemo.ViewModels;
 
@@ -20,7 +19,7 @@ public partial class SettingsPageViewModel : ViewModelBase
     {
         _faTheme = (Application.Current?.Styles[0] as FluentAvaloniaTheme)!;
         CurrentAppTheme = AppThemes[0];
-        
+
         if (_faTheme.TryGetResource("SystemAccentColor", null, out var currentColor))
         {
             CustomAccentColor = (Color)currentColor;
@@ -48,7 +47,7 @@ public partial class SettingsPageViewModel : ViewModelBase
             "None",
         ];
 
-    [ObservableProperty] 
+    [ObservableProperty]
     public partial ThemeVariant? CurrentAppTheme { get; set; }
 
     partial void OnCurrentAppThemeChanged(ThemeVariant? value)
@@ -60,7 +59,7 @@ public partial class SettingsPageViewModel : ViewModelBase
         }
     }
 
-    [ObservableProperty] 
+    [ObservableProperty]
     public partial Color CustomAccentColor { get; set; }
 
     partial void OnCustomAccentColorChanged(Color value)
@@ -75,7 +74,7 @@ public partial class SettingsPageViewModel : ViewModelBase
     {
         if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: not null } desktop)
         {
-            desktop.MainWindow.TransparencyLevelHint = value == WindowTransparencyLevel.None ? [] :[value];
+            desktop.MainWindow.TransparencyLevelHint = value == WindowTransparencyLevel.None ? [] : [value];
         }
     }
 

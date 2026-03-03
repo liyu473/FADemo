@@ -21,6 +21,7 @@
                 Opacity="0.7"
                 Text="主页" />
             <TextBox Text="{Binding TestString}" />
+            <Button Content="MesboxTest" Command="{Binding MesboxTestCommand}"/>
         </StackPanel>
     </Grid>
 </UserControl>
