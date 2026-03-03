@@ -7,9 +7,6 @@
         <Setter Property="Foreground" Value="{DynamicResource AccentFillColorDefaultBrush}" />
     </Style>
 
-    <Style Selector="ui|NavigationViewItem uip|NavigationViewItemPresenter:pointerover /template/ ContentPresenter#ContentPresenter">
-        <Setter Property="Foreground" Value="{DynamicResource AccentFillColorDefaultBrush}" />
-    </Style>
     <Style Selector="ui|NavigationViewItem uip|NavigationViewItemPresenter:pointerover /template/ ContentPresenter#Icon">
         <Setter Property="Foreground" Value="{DynamicResource AccentFillColorDefaultBrush}" />
     </Style>

@@ -13,7 +13,7 @@
             <StackPanel Spacing="8">
                 <ui:SettingsExpander
                     Description="Change the current app theme"
-                    Header="App Theme"
+                    Header="主题"
                     IconSource="DarkTheme">
 
                     <ui:SettingsExpander.Footer>
@@ -27,7 +27,7 @@
 
                 <ui:SettingsExpander
                     Description="Change window background effect (Mica/Acrylic)"
-                    Header="Window Background"
+                    Header="背景"
                     IconSource="Highlight">
                     <ui:SettingsExpander.Footer>
                         <ui:FAComboBox
@@ -39,7 +39,7 @@
 
                 <ui:SettingsExpander
                     Description="Choose navigation transition animation"
-                    Header="Navigation Animation"
+                    Header="导航动画"
                     IconSource="StarEmphasis">
                     <ui:SettingsExpander.Footer>
                         <ui:FAComboBox
@@ -52,7 +52,7 @@
 
                 <ui:SettingsExpander
                     Description="Set a custom accent color for the App"
-                    Header="App Accent Color"
+                    Header="主题色"
                     IconSource="ColorLine"
                     IsExpanded="True">
                     <ui:SettingsExpanderItem Content="Preview">
